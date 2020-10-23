@@ -5,6 +5,19 @@ env:
   cache: 0
 
 jobs:
+  tmate:
+    name: tmate
+    runs-on: ubuntu-20.04
+    env:
+      BCC: "0.8.0"
+      DIST: xenial
+      FEATURES: v0_8_0
+      LLVM: "8"
+      STATIC: true
+    steps:
+    - name: Setup tmate session
+      if: ${{ always() }}
+      uses: mxschmitt/action-tmate@v3
   xenial-llvm_6-bcc_v0_6_0:
     name: xenial / llvm 6.0 / bcc 0.6.0
     runs-on: ubuntu-16.04
