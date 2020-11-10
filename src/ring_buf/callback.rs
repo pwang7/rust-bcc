@@ -1,5 +1,4 @@
 use crate::types::MutPointer;
-// use bcc_sys::bccapi::ring_buffer_sample_fn;
 use std::os::raw::c_int;
 
 pub struct RingCallback {

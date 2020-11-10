@@ -66,7 +66,7 @@ fn do_main(runnable: Arc<AtomicBool>) -> Result<(), BccError> {
         .attach(&mut bpf)?;
     Kprobe::new()
         .handler("trace_req_completion")
-        .function("blk_account_io_completion")
+        .function("blk_account_io_done")
         .attach(&mut bpf)?;
     if let Ok(funcs) = bpf.get_kprobe_functions("blk_start_request") {
         if funcs.len() > 0 {

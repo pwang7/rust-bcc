@@ -27,6 +27,28 @@ impl RingBufBuilder {
         self
     }
 
+    #[cfg(any(
+        feature = "v0_6_0",
+        feature = "v0_6_1",
+        feature = "v0_7_0",
+        feature = "v0_8_0",
+        feature = "v0_9_0",
+        feature = "v0_10_0",
+        feature = "v0_11_0",
+        feature = "v0_12_0",
+        feature = "v0_13_0",
+        feature = "v0_14_0",
+        feature = "v0_15_0",
+    ))]
+    /// Try constructing a `RingBuf` from the builder
+    pub fn build(mut self) -> Result<RingBuf, BccError> {
+        BccError::BccVersionTooLow {
+            cause: "ring buffer".to_owned(),
+            min_version: "0.16.0".to_owned(),
+        }
+    }
+
+    #[cfg(any(feature = "v0_16_0", feature = "v0_17_0", not(feature = "specific"),))]
     /// Try constructing a `RingBuf` from the builder
     pub fn build(mut self) -> Result<RingBuf, BccError> {
         let ring_buf_manager = self
@@ -40,7 +62,7 @@ impl RingBufBuilder {
                         as *mut ring_buffer;
                 if rbm.is_null() {
                     Err(BccError::OpenRingBuf {
-                        message: format!("failed to open ring buffer of name: {}", table.name()),
+                        message: format!("failed to open ring buffer ({})", table.name()),
                     })
                 } else {
                     Ok(rbm)
@@ -62,7 +84,7 @@ impl RingBufBuilder {
                 };
                 if add_res < 0 {
                     Err(BccError::OpenRingBuf {
-                        message: format!("failed to open ring buffer of name: {}", table.name()),
+                        message: format!("failed to open ring buffer ({})", table.name()),
                     })
                 } else {
                     Ok(())
